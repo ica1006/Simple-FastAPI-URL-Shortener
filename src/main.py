@@ -27,17 +27,20 @@ def launch_error(code:int, details:str):
     html_code = html_code.replace(f'%%_ERROR_DETAILS_%%', details)
     return HTMLResponse(content=html_code, status_code=code)
 
-def add_redirect(domain: str, query_id: str, url: str):
+def add_redirect(domain: str, query_id: str, url: str, admin_key: str):
     entry = search_url(domain, query_id)
     if type(entry) != Entry:
-        entry_dict = {'query_id': query_id, "url": url, "domain": domain}
-        db_client.redirections.insert_one(entry_dict)
-        inserted_entry = search_url(domain, query_id)
-        if type(inserted_entry) != Entry:
-            print(type(inserted_entry))
-            return launch_error(400, "Error creating the entry")
+        if admin_key == ADMIN_KEY:
+            entry_dict = {'query_id': query_id, "url": url, "domain": domain}
+            db_client.redirections.insert_one(entry_dict)
+            inserted_entry = search_url(domain, query_id)
+            if type(inserted_entry) != Entry:
+                print(type(inserted_entry))
+                return launch_error(400, "Error creating the entry")
+            else:
+                return "Entry created succesfully"
         else:
-            return "Entry created succesfully"
+             return launch_error(400, "Not valid admin_key")
     return launch_error(404, "Redirection already exists")
 
 @app.get('/')
@@ -58,8 +61,8 @@ async def redirect(query_id: str, request: Request):
 
 @app.post('/json')
 async def post_redirect(body: Entry):
-    return add_redirect(domain=body.domain, query_id=body.query_id, url=body.url)
+    return add_redirect(domain=body.domain, query_id=body.query_id, url=body.url, admin_key=body.admin_key)
 
 @app.post('/form')
-async def post_redirect(domain:str = Form(...), query_id:str = Form(...), url:str = Form(...)):
-    return add_redirect(domain=domain, query_id=query_id, url=url)
+async def post_redirect(domain:str = Form(...), query_id:str = Form(...), url:str = Form(...), admin_key:str = Form(...)):
+    return add_redirect(domain=domain, query_id=query_id, url=url, admin_key=admin_key)
