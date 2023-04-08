@@ -12,7 +12,7 @@ def search_url(domain, query_id):
         entry = db_client.redirections.find_one({'domain': domain, 'query_id': query_id})
         return Entry(**entry)
     except:
-        None
+        raise HTTPException(status_code=400, detail='Something went wrong looking for the redirection entry')
 
 @app.get('/')
 async def hello_world():
