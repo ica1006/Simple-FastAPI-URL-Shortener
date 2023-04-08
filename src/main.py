@@ -1,11 +1,18 @@
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from urllib.parse import urlparse
-from db_client import db_client
 from pathlib import Path
 from entry_model import Entry
+from pymongo import MongoClient
+from json import load
+
+with open("config.json", encoding='UTF-8') as json_file:
+            config = load(json_file)
+ADMIN_KEY = config['admin_key']
+CONNECTION_STRING = config['mongodb_connection_string']
 
 app = FastAPI()
+db_client = MongoClient(CONNECTION_STRING).url_shortener
 
 def search_url(domain, query_id):
     try:

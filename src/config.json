@@ -1,0 +1,4 @@
+{
+    "mongodb_connection_string": "mongodb://USER:PASS@SERVER/?retryWrites=true&w=majority",
+    "admin_key": "YOUR_ADMIN_KEY"
+}
