@@ -130,3 +130,4 @@ dmypy.json
 
 notes.txt
 src/db_client.py
+src/config.json
