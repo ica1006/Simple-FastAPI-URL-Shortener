@@ -8,9 +8,10 @@
 <body>
     <h2>Simple FastAPI URL Shortener</h2>
 
-    <input type="radio" value="Create" onclick="showCreateForm()" name="option" checked="checked"> Create
-    <input type="radio" value="Create" onclick="showEditForm()" name="option"> Edit
-    <input type="radio" value="Remove" onclick="showRemoveForm()" name="option"> Remove
+    <input type="radio" value="Create" onclick="changeFormDisplay('block', 'none', 'none')" name="option"
+        checked="checked"> Create
+    <input type="radio" value="Create" onclick="changeFormDisplay('none', 'block', 'none')" name="option"> Edit
+    <input type="radio" value="Delete" onclick="changeFormDisplay('none', 'none', 'block')" name="option"> Delete
     <br><br>
 
     <div id="create_form_div">
@@ -27,43 +28,53 @@
         </form>
     </div>
 
-    <div id="edit_form_div" style="display: none;">Edit</div>
+    <div id="edit_form_div" style="display: none;">
+        <form id="edit_form">
+            <label for="domain">Domain:</label>
+            <input type="text" name="domain"><br>
+            <label for="query_id">Query parameter:</label>
+            <input type="text" name="query_id"><br>
+            <label for="url">Full url:</label>
+            <input type="text" name="url"><br>
+            <label for="admin_key">Admin key:</label>
+            <input type="password" name="admin_key"><br>
+            <input type="submit" value="Edit">
+        </form>
+    </div>
 
-    <div id="remove_form_div" style="display: none;">Remove</div>
+    <div id="delete_form_div" style="display: none;">
+        <form id="delete_form">
+            <label for="domain">Domain:</label>
+            <input type="text" name="domain"><br>
+            <label for="query_id">Query parameter:</label>
+            <input type="text" name="query_id"><br>
+            <label for="admin_key">Admin key:</label>
+            <input type="password" name="admin_key"><br>
+            <input type="submit" value="Delete">
+        </form>
+    </div>
 
     <script>
-        function showCreateForm() {
-            document.getElementById('create_form_div').style.display = 'block';
-            document.getElementById('edit_form_div').style.display = 'none';
-            document.getElementById('remove_form_div').style.display = 'none';
-        }
-
-        function showEditForm() {
-            document.getElementById('create_form_div').style.display = 'none';
-            document.getElementById('edit_form_div').style.display = 'block';
-            document.getElementById('remove_form_div').style.display = 'none';
-        }
-
-        function showRemoveForm() {
-            document.getElementById('create_form_div').style.display = 'none';
-            document.getElementById('edit_form_div').style.display = 'none';
-            document.getElementById('remove_form_div').style.display = 'block';
+        function changeFormDisplay(create, edit, del) {
+            document.getElementById('create_form_div').style.display = create;
+            document.getElementById('edit_form_div').style.display = edit;
+            document.getElementById('delete_form_div').style.display = del;
         }
     </script>
 
     <script>
-        const form = document.getElementById('create_form');
-        form.addEventListener('submit', function (event) {
+        const create_form = document.getElementById('create_form');
+        create_form.addEventListener('submit', function (event) {
             event.preventDefault();
             const data = {
-                domain: form.domain.value,
-                query_id: form.query_id.value,
-                url: form.url.value,
-                admin_key: form.admin_key.value
+                domain: create_form.domain.value,
+                query_id: create_form.query_id.value,
+                url: create_form.url.value,
+                admin_key: create_form.admin_key.value
             };
             const json = JSON.stringify(data);
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', '/json');
+            xhr.open('POST', '/');
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.addEventListener('load', function () {
                 if (xhr.status === 200) {
@@ -75,6 +86,52 @@
                 }
             });
             xhr.send(json);
+        });
+    </script>
+
+    <script>
+        const edit_form = document.getElementById('edit_form');
+        edit_form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const data = {
+                domain: edit_form.domain.value,
+                query_id: edit_form.query_id.value,
+                url: edit_form.url.value,
+                admin_key: edit_form.admin_key.value
+            };
+            const json = JSON.stringify(data);
+            const xhr = new XMLHttpRequest();
+            xhr.open('PUT', '/');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.addEventListener('load', function () {
+                if (xhr.status === 200) {
+                    //const response = JSON.parse(xhr.responseText);
+                    //alert(`Response: ${response}`);
+                    alert('Success!')
+                } else {
+                    alert(`Error: ${xhr.status}`);
+                }
+            });
+            xhr.send(json);
+        });
+    </script>
+
+    <script>
+        const del_form = document.getElementById('delete_form');
+        del_form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const xhr = new XMLHttpRequest();
+            xhr.open('DELETE', `/${del_form.domain.value}/${del_form.query_id.value}?admin_key=${del_form.admin_key.value}`);
+            xhr.addEventListener('load', function () {
+                if (xhr.status === 200) {
+                    //const response = JSON.parse(xhr.responseText);
+                    //alert(`Response: ${response}`);
+                    alert('Success!')
+                } else {
+                    alert(`Error: ${xhr.status}`);
+                }
+            });
+            xhr.send();
         });
     </script>
 
