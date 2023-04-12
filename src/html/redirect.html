@@ -1,11 +1,27 @@
 <!DOCTYPE html>
 <html>
-    <script>
-        location.replace("%%_URL_%%")
-    </script>
-    
-    <body>
+
+<script>
+    location.replace("%%_URL_%%")
+</script>
+
+<head>
+    <meta charset="utf-8">
+    <title>Redirecting...</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>
+            Redirecting...
+        </h1>
+    </header>
+    <main>
         <h2>If your browser does not support automatic redirect, click the following link</h2>
         <a href="%%_URL_%%">Click here</a>
-    </body>
+    </main>
+    <iframe src="static/footer.html" frameborder="0" scrolling="no"></iframe>
+</body>
+
 </html>

@@ -1,9 +1,23 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>ERROR %%_ERROR_CODE_%%</title>
-    </head>
-    <body>
-        <h2>%%_ERROR_CODE_%% %%_ERROR_DETAILS_%%</h2>
-    </body>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>Error %%_ERROR_CODE_%%</title>
+    <link rel="stylesheet" href="static/style.css">
+  </head>
+  <body>
+    <header>
+      <h1>Ups!</h1>
+    </header>
+
+    <main>
+      <div class="error-container">
+        <h2 class="error-title">Error %%_ERROR_CODE_%%</h2>
+        <p class="error-message">%%_ERROR_DETAILS_%%</p>
+        <a href="/">Go back to homepage</a>
+      </div>
+    </main>
+
+    <iframe src="static/footer.html" frameborder="0" scrolling="no"></iframe>
+  </body>
 </html>

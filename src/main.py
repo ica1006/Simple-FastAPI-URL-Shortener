@@ -1,5 +1,6 @@
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from urllib.parse import urlparse
 from pathlib import Path
 from entry_model import Entry
@@ -13,6 +14,8 @@ CONNECTION_STRING = config['mongodb_connection_string']
 
 app = FastAPI()
 db_client = MongoClient(CONNECTION_STRING).url_shortener
+
+app.mount("/static", StaticFiles(directory="html/static"), name="Static Resources")
 
 def search_url(domain, query_id):
     try:

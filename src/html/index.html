@@ -2,57 +2,65 @@
 <html>
 
 <head>
+    <meta charset="utf-8">
     <title>URL Shortener</title>
+    <link rel="stylesheet" href="static/style.css">
 </head>
 
 <body>
-    <h2>Simple FastAPI URL Shortener</h2>
+    <header>
+        <h1>Simple FastAPI URL Shortener</h1>
+    </header>
 
-    <input type="radio" value="Create" onclick="changeFormDisplay('block', 'none', 'none')" name="option"
-        checked="checked"> Create
-    <input type="radio" value="Create" onclick="changeFormDisplay('none', 'block', 'none')" name="option"> Edit
-    <input type="radio" value="Delete" onclick="changeFormDisplay('none', 'none', 'block')" name="option"> Delete
-    <br><br>
+    <main>
+        <input type="radio" value="Create" onclick="changeFormDisplay('block', 'none', 'none')" name="option"
+            checked="checked"> Create
+        <input type="radio" value="Create" onclick="changeFormDisplay('none', 'block', 'none')" name="option"> Edit
+        <input type="radio" value="Delete" onclick="changeFormDisplay('none', 'none', 'block')" name="option"> Delete
+        <br><br>
 
-    <div id="create_form_div">
-        <form id="create_form">
-            <label for="domain">Domain:</label>
-            <input type="text" name="domain"><br>
-            <label for="query_id">Query parameter:</label>
-            <input type="text" name="query_id"><br>
-            <label for="url">Full url:</label>
-            <input type="text" name="url"><br>
-            <label for="admin_key">Admin key:</label>
-            <input type="password" name="admin_key"><br>
-            <input type="submit" value="Shrink">
-        </form>
-    </div>
+        <div id="create_form_div">
+            <form id="create_form">
+                <label for="domain">Domain:</label>
+                <input type="text" name="domain"><br>
+                <label for="query_id">Query parameter:</label>
+                <input type="text" name="query_id"><br>
+                <label for="url">Full url:</label>
+                <input type="text" name="url"><br>
+                <label for="admin_key">Admin key:</label>
+                <input type="password" name="admin_key"><br>
+                <input type="submit" value="Shrink">
+            </form>
+        </div>
 
-    <div id="edit_form_div" style="display: none;">
-        <form id="edit_form">
-            <label for="domain">Domain:</label>
-            <input type="text" name="domain"><br>
-            <label for="query_id">Query parameter:</label>
-            <input type="text" name="query_id"><br>
-            <label for="url">Full url:</label>
-            <input type="text" name="url"><br>
-            <label for="admin_key">Admin key:</label>
-            <input type="password" name="admin_key"><br>
-            <input type="submit" value="Edit">
-        </form>
-    </div>
+        <div id="edit_form_div" style="display: none;">
+            <form id="edit_form">
+                <label for="domain">Domain:</label>
+                <input type="text" name="domain"><br>
+                <label for="query_id">Query parameter:</label>
+                <input type="text" name="query_id"><br>
+                <label for="url">Full url:</label>
+                <input type="text" name="url"><br>
+                <label for="admin_key">Admin key:</label>
+                <input type="password" name="admin_key"><br>
+                <input type="submit" value="Edit">
+            </form>
+        </div>
 
-    <div id="delete_form_div" style="display: none;">
-        <form id="delete_form">
-            <label for="domain">Domain:</label>
-            <input type="text" name="domain"><br>
-            <label for="query_id">Query parameter:</label>
-            <input type="text" name="query_id"><br>
-            <label for="admin_key">Admin key:</label>
-            <input type="password" name="admin_key"><br>
-            <input type="submit" value="Delete">
-        </form>
-    </div>
+        <div id="delete_form_div" style="display: none;">
+            <form id="delete_form">
+                <label for="domain">Domain:</label>
+                <input type="text" name="domain"><br>
+                <label for="query_id">Query parameter:</label>
+                <input type="text" name="query_id"><br>
+                <label for="admin_key">Admin key:</label>
+                <input type="password" name="admin_key"><br>
+                <input type="submit" value="Delete">
+            </form>
+        </div>
+    </main>
+
+    <iframe src="static/footer.html" frameborder="0" scrolling="no"></iframe>
 
     <script>
         function changeFormDisplay(create, edit, del) {
