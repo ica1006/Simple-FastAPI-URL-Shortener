@@ -38,7 +38,7 @@ async def index(request: Request):
     logger.logEntry(f"{request.client.host} got index")
     return HTMLResponse(content=html_code, status_code=200)
 
-@app.get('/{query_id}')
+@app.get('/{query_id}', status_code=301)
 async def redirect(query_id: str, request: Request):
     base_url = str(request.base_url)
     domain = urlparse(base_url).netloc
@@ -49,9 +49,9 @@ async def redirect(query_id: str, request: Request):
     html_code = Path('html/redirect.html').read_text()
     html_code = html_code.replace(f'%%_URL_%%', entry.url)
     logger.logEntry(f"{request.client.host} accessed {domain}/{query_id} successfully")
-    return HTMLResponse(content=html_code, status_code=200)
+    return HTMLResponse(content=html_code)
 
-@app.post('/')
+@app.post('/', status_code=201)
 async def post_redirect(body: Entry, request: Request):
     entry = search_url(body.domain, body.query_id)
     logger.logEntry(f"{request.client.host} is trying to create the entry {body.domain}/{body.query_id}: {body.url}")
@@ -66,10 +66,10 @@ async def post_redirect(body: Entry, request: Request):
                 logger.logEntry(f"Entry {body.domain}/{body.query_id}: {body.url} created successfully")
                 return "Entry created succesfully"
         else:
-             return launch_error(400, "Not valid admin_key")
-    return launch_error(404, "Redirection already exists")
+             return launch_error(401, "Not valid admin_key")
+    return launch_error(409, "Redirection already exists")
 
-@app.delete('/{domain}/{query_id}')
+@app.delete('/{domain}/{query_id}', status_code=200)
 async def delete_redirect(domain: str, query_id: str, admin_key: str, request: Request):
     entry = search_url(domain, query_id)
     logger.logEntry(f"{request.client.host} is trying to delete the entry {domain}/{query_id}")
@@ -79,7 +79,7 @@ async def delete_redirect(domain: str, query_id: str, admin_key: str, request: R
             logger.logEntry(f"Entry {domain}/{query_id} deleted successfully")
             return "Entry deleted succesfully"
         else:
-             return launch_error(400, "Not valid admin_key")
+             return launch_error(401, "Not valid admin_key")
     else:
          return launch_error(404, "Redirection not found")
 
@@ -98,5 +98,5 @@ async def put_redirect(body: Entry, request: Request):
                 logger.logEntry(f"Entry {body.domain}/{body.query_id} eddited successfully")
                 return "Entry modified succesfully"
         else:
-             return launch_error(400, "Not valid admin_key")
+             return launch_error(401, "Not valid admin_key")
     return launch_error(404, "Redirection not found")
